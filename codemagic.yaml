@@ -4,18 +4,14 @@ workflows:
     environment:
       java: 17
     scripts:
-      - name: Unpack and build
+      - name: Unpack and build with full log
         script: |
-          echo "=== Unpacking archive ==="
           tar -xf FocusFilter_v4.tar.gz-6.tar
-          echo "=== Contents after unpack ==="
-          ls -la
-          echo "=== Looking for project folder ==="
           cd FocusFilter
-          echo "=== Generating gradlew ==="
           gradle wrapper
           chmod +x gradlew
-          echo "=== Building APK ==="
-          ./gradlew assembleDebug --stacktrace
+          ./gradlew assembleDebug --stacktrace --info > full_log.txt 2>&1
+          cat full_log.txt
     artifacts:
+      - FocusFilter/full_log.txt
       - FocusFilter/app/build/outputs/apk/debug/*.apk

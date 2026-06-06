@@ -1,0 +1,15 @@
+workflows:
+  android-build:
+    name: Build FocusFilter APK
+    environment:
+      java: 17
+    scripts:
+      - name: Unpack and build
+        script: |
+          tar -xf FocusFilter_v4.tar.gz-5.tar
+          cd FocusFilter
+          gradle wrapper
+          chmod +x gradlew
+          ./gradlew assembleDebug --stacktrace
+    artifacts:
+      - FocusFilter/app/build/outputs/apk/debug/*.apk

@@ -4,14 +4,28 @@ workflows:
     environment:
       java: 17
     scripts:
-      - name: Unpack and build with full log
+      - name: Unpack project
         script: |
-          tar -xf FocusFilter_v4.tar.gz-6.tar
+          tar -xf FocusFilter_v4.tar.gz-7.tar
+      - name: Create missing notification icon
+        script: |
           cd FocusFilter
-          gradle wrapper
+          mkdir -p app/src/main/res/drawable
+          cat > app/src/main/res/drawable/ic_notifications.xml << 'EOF'
+          <vector xmlns:android="http://schemas.android.com/apk/res/android"
+              android:width="24dp"
+              android:height="24dp"
+              android:viewportWidth="24"
+              android:viewportHeight="24">
+            <path
+                android:fillColor="#FF000000"
+                android:pathData="M12,22c1.1,0 2,-0.9 2,-2h-4c0,1.1 0.9,2 2,2zM18,16v-5c0,-3.07 -1.63,-5.64 -4.5,-6.32V4c0,-0.83 -0.67,-1.5 -1.5,-1.5s-1.5,0.67 -1.5,1.5v0.68C7.64,5.36 6,7.93 6,11v5l-2,2v1h16v-1l-2,-2z"/>
+          </vector>
+          EOF
+      - name: Build APK
+        script: |
+          cd FocusFilter
           chmod +x gradlew
-          ./gradlew assembleDebug --stacktrace --info > full_log.txt 2>&1
-          cat full_log.txt
+          ./gradlew assembleDebug --stacktrace
     artifacts:
-      - FocusFilter/full_log.txt
       - FocusFilter/app/build/outputs/apk/debug/*.apk

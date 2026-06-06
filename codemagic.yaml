@@ -1,15 +1,16 @@
 workflows:
   android-build:
-    name: Build FocusFilter APK
+    name: Debug FocusFilter
     environment:
       java: 17
     scripts:
-      - name: Unpack and build
+      - name: List all files
         script: |
-          tar -xf FocusFilter_v4.tar.gz-5.tar
-          cd FocusFilter
-          gradle wrapper
-          chmod +x gradlew
-          ./gradlew assembleDebug --stacktrace
-    artifacts:
-      - FocusFilter/app/build/outputs/apk/debug/*.apk
+          echo "=== Current directory ==="
+          pwd
+          echo "=== All files and folders ==="
+          ls -la
+          echo "=== Looking for archive files ==="
+          find . -name "*.tar*" -o -name "*.gz*" -o -name "*.zip"
+          echo "=== Looking for gradle files ==="
+          find . -name "build.gradle" -o -name "settings.gradle"
